@@ -1,68 +1,35 @@
 import { useState } from "react";
+import confetti from "canvas-confetti"
+import { Square } from "./components/Square.jsx";
+import { TURNS } from "./constants.js";
+import { checkWinnerFrom, checkEndGame } from "./logic/board.js"
+import { WinnerModal } from "./components/WinnerModal.jsx";
+import { saveGameToStorage, resetGameStorage } from "./storage/index.js";
 import "./App.css";
 
-const TURNS = {
-  // @ Turnos
-  X: "x",
-  O: "o",
-};
-
-// # Combos que determinan un ganador
-const WINNER_COMBOS = [
-  [0, 1, 2],
-  [3, 4, 5],
-  [6, 7, 8],
-  [0, 3, 6],
-  [1, 4, 7],
-  [2, 5, 8],
-  [0, 4, 8],
-  [2, 4, 6],
-];
-
-// # Esta funcion nos permite generar el tablero con sus respectivas funciones
-const Square = ({ children, isSelected, updateBoard, index }) => {
-  // * mostramos visualmente, que turno es el que se encuentra activo
-  const className = `square ${isSelected ? "is-selected" : ""}`;
-
-  // * Ejecutamos la funcion que nos permitira actualizar los turnos y determinar el ganador
-  const handleClick = () => {
-    updateBoard(index);
-  };
-
-  return (
-    <div onClick={handleClick} className={className}>
-      {children}
-    </div>
-  );
-};
-
 function App() {
-  // * estado que controla el tablero
-  const [board, setBoard] = useState(Array(9).fill(null));
+  // # estado que controla el tablero
+  const [board, setBoard] = useState(() => {
+    /* 
+    * Revisamos si tenemos una partida guardada, para continuar
+    * Se obtiene el localStorage aqui, para evitar volver lento el renderizado
+    * Ya que de esta manera, esto solo se ejecutara 1 vez, y no cada vez que se renderice
+    */
+    const boardFromStorage = window.localStorage.getItem("board")
+    return boardFromStorage ? JSON.parse(boardFromStorage) : Array(9).fill(null)
+  });
 
-  // * Estado que controla el turno
-  const [turn, setTurn] = useState(TURNS.X);
+  // # Estado que controla el turno
+  const [turn, setTurn] = useState(() => {
+    const turnFromStorage = window.localStorage.getItem("turn")
+    return turnFromStorage ?? TURNS.X
+  });
 
-  // * Estado para determinar el ganador
+  // # Estado para determinar el ganador
   // ! Null es que no hay ganador, false es que hay empate
   const [winner, setWinner] = useState(null);
 
-  const checkWinner = (boardToCheck) => {
-    for (const combo of WINNER_COMBOS) {
-      const [a, b, c] = combo;
-      if (
-        boardToCheck[a] &&
-        boardToCheck[a] == boardToCheck[b] &&
-        boardToCheck[b] == boardToCheck[c]
-      ) {
-        return boardToCheck[a];
-      }
-    }
-    // ! No tenemos ganador
-    return null;
-  };
-
-  // * Estado que nos permitira controlar quien gana, y actualizar el turno
+  // # Estado que nos permitira controlar quien gana, y actualizar el turno
   const updateBoard = (index) => {
     // * Evitamos sobreescribir los campos
     if (board[index] || winner) return;
@@ -76,26 +43,43 @@ function App() {
     const newTurn = turn == TURNS.X ? TURNS.O : TURNS.X;
     setTurn(newTurn);
 
-    // * Revisar si tenemos un ganador
-    const newWinner = checkWinner(newBoard);
+    // * Guardamos la partida
+    saveGameToStorage({
+      board: newBoard,
+      turn: newTurn
+    })
+
+    // * Revisar si tenemos un ganador o empate
+    const newWinner = checkWinnerFrom(newBoard);
     if (newWinner) {
+      confetti()
       setWinner(newWinner);
+    } else if (checkEndGame(newBoard)) {
+      setWinner(false)
     }
   };
 
+  // # funcion para volver a empezar el juego
+  const resetGame = () => {
+    setBoard(Array(9).fill(null))
+    setTurn(TURNS.X)
+    setWinner(null)
+    resetGameStorage()
+  }
+
   /*
    * con el _, index. Indicamos de manera explicita que no estare utilizando el valor del elemento
-   * Y solo me interesara el indice, el cual contiene el valor del array
+   * en la posicion actual Y solo me interesara el indice, el cual contiene el valor del array
    */
-
   return (
     <main className="board">
       <h1>Gatito</h1>
+      <button onClick={resetGame}>Reset del juego</button>
       <section className="game">
-        {board.map((_, index) => {
+        {board.map((square, index) => {
           return (
             <Square key={index} index={index} updateBoard={updateBoard}>
-              {board[index]}
+              {square}
             </Square>
           );
         })}
@@ -105,6 +89,8 @@ function App() {
         <Square isSelected={turn == TURNS.X}>{TURNS.X}</Square>
         <Square isSelected={turn == TURNS.O}>{TURNS.O}</Square>
       </section>
+
+      <WinnerModal winner={winner} resetGame={resetGame} />
     </main>
   );
 }
