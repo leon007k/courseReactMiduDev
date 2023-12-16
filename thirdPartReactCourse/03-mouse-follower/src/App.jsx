@@ -5,6 +5,7 @@ function App() {
   const [enable, setEnabled] = useState(false)
   const [position, setPosition] = useState({ x: 0, y: 0 })
 
+  // # efecto para agregar circulo que sigue al cursor
   useEffect(() => {
     console.log('effect ', { enable })
 
@@ -27,7 +28,16 @@ function App() {
      * antes de ejecutar el efecto de nuevo 
      */
     return () => {
+      setPosition({ x: 50, y: 50 });
       window.removeEventListener('pointermove', handleMove)
+    }
+  }, [enable])
+
+  useEffect(() => {
+    document.body.classList.toggle('no-cursor', enable)
+
+    return () => {
+      document.body.classList.remove('no-cursor')
     }
   }, [enable])
 
