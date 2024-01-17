@@ -4,8 +4,9 @@ Crea una aplicacion para buscar películas
 
 API a usar:
 
-- http://www.omdapi.com/
-- API_KEY: 4287ad07
+- http://www.omdbapi.com/
+- API_KEY: c6584e9f
+- Example to Search movie: https://www.omdbapi.com/?apikey=c6584e9f&s=avengers
 
 Requerimientos:
 
