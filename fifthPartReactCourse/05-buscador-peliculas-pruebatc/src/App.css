@@ -3,15 +3,63 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  max-width: 800px;
+}
+
+.search-container {
+  height: 36px;
+  margin-bottom: 56px;
+  p {
+    margin: 5px;
+  }
 }
 
 main {
   display: flex;
   justify-content: center;
+  width: 100%;
 }
 
 .form {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* * havemos que las películas se muestren en un grid responsive  */
+.movies {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 32px;
+  list-style-type: none;
+}
+
+.movie {
+  display: flex;
+  flex-direction: column;
+}
+
+.movie-text__container h3 {
+  text-overflow: ellipsis;
+  white-space: pre;
+  overflow: hidden;
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.movie-text__container p {
+  margin-top: 0;
+}
+
+.movie-image__container {
+  flex: 1;
+}
+
+.movie-image__container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  max-width: initial;
 }

@@ -2,13 +2,17 @@ import PropTypes from "prop-types";
 
 const ListOfMovies = ({ movies }) => {
   return (
-    <ul>
+    <ul className="movies">
       {
         movies.map(movie => (
-          <li key={movie.imdbID}>
-            <h3>{movie.Title}</h3>
-            <p>{movie.Year}</p>
-            <img src={movie.Poster} alt={movie.Title} />
+          <li className="movie" key={movie.id}>
+            <div className="movie-image__container">
+              <img src={movie.poster} alt={movie.title} />
+            </div>
+            <div className="movie-text__container">
+              <h3>{movie.title}</h3>
+              <p>{movie.year}</p>
+            </div>
           </li>
         ))
       }
@@ -25,7 +29,6 @@ const NotMoviesFound = () => {
 export const Movies = ({ movies }) => {
   const hasNotMovies = movies?.length > 0
 
-
   return (
     hasNotMovies
       ? <ListOfMovies movies={movies} />
@@ -34,9 +37,9 @@ export const Movies = ({ movies }) => {
 }
 
 ListOfMovies.propTypes = {
-  movies: PropTypes.object
+  movies: PropTypes.array
 }
 
 Movies.propTypes = {
-  movies: PropTypes.object
+  movies: PropTypes.array
 }
