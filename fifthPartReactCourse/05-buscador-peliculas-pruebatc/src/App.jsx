@@ -1,17 +1,22 @@
+import { useState } from 'react'
 import './App.css'
 import { Movies } from './components/movies'
 import { useMovies } from './hooks/useMovies'
 import { useSearch } from './hooks/useSearch'
 
 function App() {
-
+  const [sort, setSort] = useState(false)
   const { search, error, updateSearch } = useSearch()
-  const { movies: mappedMovies, getMovies } = useMovies({ search })
+  const { movies: mappedMovies, getMovies } = useMovies({ search, sort })
   /* const inputRef = useRef() */
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    getMovies()
+    getMovies({ search })
+  }
+
+  const handleShort = () => {
+    setSort(!sort)
   }
 
   // * Manera controlada: lo hace mas lento, porque cada vez que se actualiza, se renderiza cada ves
@@ -52,6 +57,7 @@ function App() {
           <form className="form" onSubmit={handleSubmit}>
             {/* <input ref={inputRef} name='query' placeholder="Avengers, Star Wars, Transformers..." /> */}
             <input onChange={handleChange} value={search} name='query' placeholder="Avengers, Star Wars, Transformers..." />
+            <input type="checkbox" onChange={handleShort} checked={sort} />
             <button type="submit">Buscar</button>
           </form>
           {error && <p style={{ color: 'red' }}>{error}</p>}

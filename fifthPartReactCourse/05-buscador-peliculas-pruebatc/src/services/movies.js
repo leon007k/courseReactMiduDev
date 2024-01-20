@@ -9,6 +9,9 @@ export const searchMovies = async ({ search }) => {
     const json = await response.json();
     const movies = json.Search;
 
+    // * Ordenamos las peliculas por su año de lanzamiento
+    movies.sort((a, b) => a.Year - b.Year);
+
     // * Mapeamos el resultado de la api para hacerla mas mantenible
     return movies?.map(movies => ({
       id: movies.imdbID,
