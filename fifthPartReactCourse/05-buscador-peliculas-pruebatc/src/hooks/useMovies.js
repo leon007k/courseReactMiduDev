@@ -14,6 +14,7 @@ export const useMovies = ({ search, sort }) => {
     * Conseguir que solo se genere una vez la funcion
      */
     return async ({ search }) => {
+      // # Se evita que se haga dos veces la misma busqueda
       if (search === previousSearch.current) return
 
       try {

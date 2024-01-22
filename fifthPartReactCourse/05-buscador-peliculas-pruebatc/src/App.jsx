@@ -1,14 +1,24 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import './App.css'
 import { Movies } from './components/movies'
 import { useMovies } from './hooks/useMovies'
 import { useSearch } from './hooks/useSearch'
+import debounce from "just-debounce-it"
 
 function App() {
   const [sort, setSort] = useState(false)
   const { search, error, updateSearch } = useSearch()
   const { movies: mappedMovies, getMovies } = useMovies({ search, sort })
   /* const inputRef = useRef() */
+
+  // # Evita que se haga la búsqueda continuamente al escribir(debounce)
+  const debounceGetMovies = useCallback(
+    debounce((search) => {
+      getMovies({ search })
+    }, 300)
+    ,
+    [getMovies]
+  )
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -24,6 +34,8 @@ function App() {
     const newQuery = event.target.value
     if (newQuery.startsWith(' ')) return
     updateSearch(newQuery)
+    // # Haz que la búsqueda se haga automáticamente al escribir
+    debounceGetMovies(newQuery)
   }
 
   // * Manera con useRef
