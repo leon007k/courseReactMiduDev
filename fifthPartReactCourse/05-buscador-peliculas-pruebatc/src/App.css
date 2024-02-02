@@ -8,7 +8,7 @@
 }
 
 .search-container {
-  height: 36px;
+  height: 46px;
   margin-bottom: 56px;
   p {
     margin: 5px;
@@ -23,12 +23,30 @@ main {
 
 .form {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
+.form-search__movies {
+  display: flex;
+  flex-direction: row;
+}
+
+.form-search__filter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.form-search__filter label {
+  margin-bottom: 0;
+}
+
 /* * havemos que las películas se muestren en un grid responsive  */
 .movies {
+  padding: 5px;
   display: grid;
   width: 100%;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -62,4 +80,10 @@ main {
   height: 100%;
   object-fit: cover;
   max-width: initial;
+}
+
+@media (max-width: 767px) {
+  .movies {
+    padding: 10px;
+  }
 }

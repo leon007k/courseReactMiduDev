@@ -65,15 +65,23 @@ function App() {
     <div className="page">
       <header>
         <h1>Buscador de peliculas</h1>
-        <div className='search-container'>
+        <section className='search-container'>
           <form className="form" onSubmit={handleSubmit}>
-            {/* <input ref={inputRef} name='query' placeholder="Avengers, Star Wars, Transformers..." /> */}
-            <input onChange={handleChange} value={search} name='query' placeholder="Avengers, Star Wars, Transformers..." />
-            <input type="checkbox" onChange={handleShort} checked={sort} />
-            <button type="submit">Buscar</button>
+            <div className='form-search__movies'>
+              <input onChange={handleChange} value={search} name='query' placeholder="Avengers, Star Wars, Transformers..." />
+              <button type="submit">Buscar</button>
+              {/* <input ref={inputRef} name='query' placeholder="Avengers, Star Wars, Transformers..." /> */}
+            </div>
+            <div className='form-search__filter'>
+              <p>Ordenar por: </p>
+              <label>
+                <input type="checkbox" onChange={handleShort} checked={sort} />
+                Nombre
+              </label>
+            </div>
           </form>
           {error && <p style={{ color: 'red' }}>{error}</p>}
-        </div>
+        </section>
       </header>
 
       <main>
