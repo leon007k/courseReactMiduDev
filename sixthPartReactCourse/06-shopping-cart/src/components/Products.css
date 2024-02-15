@@ -39,3 +39,11 @@
   object-fit: cover;
   background: #fff;
 }
+
+.add-to-cart {
+  background-color: #09f;
+}
+
+.remove-from-cart {
+  background-color: #c00707;
+}

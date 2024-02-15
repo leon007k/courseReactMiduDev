@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { createContext, useState } from "react";
+import { createContext, useMemo, useState } from "react";
 
 // # 1.- Crear el Context. Este es el que tenemos que consumir
 export const FiltersContext = createContext(); // Solo se crea una vez, singleton
@@ -11,13 +11,15 @@ export function FiltersProvider({ children }) {
     minPrice: 0
   })
 
+  const obj = useMemo(() => ({
+    category,
+    minPrice,
+    setFilter
+  }), [category, minPrice])
+
   return (
     <FiltersContext.Provider
-      value={{
-        category,
-        minPrice,
-        setFilter
-      }}>
+      value={obj}>
       {children}
     </FiltersContext.Provider>
   )
