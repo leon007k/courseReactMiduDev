@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import { useId } from 'react'
 import { useFilters } from "../hooks/useFilters";
 import './Filter.css'
@@ -54,8 +53,4 @@ export function Filters() {
       </div>
     </section>
   )
-}
-
-Filters.propTypes = {
-  onChange: PropTypes.func
 }
