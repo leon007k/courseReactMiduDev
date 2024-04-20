@@ -53,6 +53,4 @@
 .cart-button ~ input:checked ~ .cart {
   height: 45vw;
   display: block;
-  overflow: hidden;
-  overflow-y: scroll;
 }

@@ -8,6 +8,7 @@ export function useCart() {
     throw new Error("useCart must be used within a CartProvider")
   }
 
+  // * Verificamos que el producto exista en el carrito
   const checkProductInCart = product => {
     return context.cart.some(item => item.id === product.id)
   }
