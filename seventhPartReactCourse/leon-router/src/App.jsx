@@ -1,34 +1,33 @@
-import { useEffect, useState } from 'react'
 import './App.css'
-import { EVENT } from './consts'
+import { Router } from './Router'
+import Page404 from './pages/Page404'
 import { HomePage } from './pages/Home.jsx'
 import { AboutPage } from './pages/About'
+import { SearchPage } from './pages/Search'
+import { Route } from './Route.jsx'
+
+const appRoutes = [
+  {
+    path: '/search/:query',
+    Component: SearchPage
+  }
+]
 
 function App() {
-  const [currentPath, setCurrentPath] = useState(window.location.pathname)
-
-  useEffect(() => {
-    const onLocationChange = () => {
-      setCurrentPath(window.location.pathname)
-    }
-
-    // * Ejecucion del evento personalizado que se creo
-    window.addEventListener(EVENT.PUSHSTATE, onLocationChange)
-    // * Ejecucion de evento para volver atras
-    window.addEventListener(EVENT.POPSTATE, onLocationChange)
-
-    // * Limpiamos el evento
-    return () => {
-      window.addEventListener(EVENT.PUSHSTATE, onLocationChange)
-      window.addEventListener(EVENT.POPSTATE, onLocationChange)
-    }
-  }, [])
 
   // ! Al trabajar el renderizado con condicionales, estariamos creando una MPAs(Multi Page Application)
-  return (
+  /* return (
     <main>
       {currentPath == '/' && <HomePage />}
       {currentPath == '/about' && <AboutPage />}
+    </main>
+  ) */
+  return (
+    <main>
+      <Router routes={appRoutes} defaultComponent={Page404} >
+        <Route path='/' Component={HomePage} />
+        <Route path='/about' Component={AboutPage} />
+      </Router>
     </main>
   )
 }
