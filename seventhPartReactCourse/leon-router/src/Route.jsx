@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
 
-
 // eslint-disable-next-line no-unused-vars
 export function Route({ path, Component }) {
   return null
@@ -8,5 +7,5 @@ export function Route({ path, Component }) {
 
 Route.propTypes = {
   path: PropTypes.string,
-  Component: PropTypes.func
+  Component: PropTypes.oneOfType([PropTypes.object, PropTypes.func])
 }

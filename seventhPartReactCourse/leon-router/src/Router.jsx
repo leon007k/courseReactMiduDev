@@ -19,8 +19,8 @@ export function Router({ children, routes = [], defaultComponent: DefaultCompone
 
     // * Limpiamos el evento
     return () => {
-      window.addEventListener(EVENT.PUSHSTATE, onLocationChange)
-      window.addEventListener(EVENT.POPSTATE, onLocationChange)
+      window.removeEventListener(EVENT.PUSHSTATE, onLocationChange)
+      window.removeEventListener(EVENT.POPSTATE, onLocationChange)
     }
   }, [])
 
