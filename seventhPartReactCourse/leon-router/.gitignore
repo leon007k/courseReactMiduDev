@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Extra
+pack-lock.json
+.DS_Store
+projects/**/DS_Store

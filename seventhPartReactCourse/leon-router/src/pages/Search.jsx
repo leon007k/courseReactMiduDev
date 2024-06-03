@@ -1,8 +1,12 @@
 import { useEffect } from "react"
 import PropTypes from "prop-types";
+import { useQueryParams } from "../hooks/useQueryParams";
 
 
 export function SearchPage({ routesParams }) {
+
+  const { limit } = useQueryParams
+  console.log(limit)
 
   useEffect(() => {
     document.title = `Has buscado ${routesParams.query}`

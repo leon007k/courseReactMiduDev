@@ -3,13 +3,14 @@ import { EVENT } from './consts'
 import { useEffect, useState, Children } from 'react'
 import { match } from 'path-to-regexp'
 import PropTypes from "prop-types";
+import { getCurrentPath } from './utils/utils';
 
 export function Router({ children, routes = [], defaultComponent: DefaultComponent = () => <h1>404</h1> }) {
-  const [currentPath, setCurrentPath] = useState(window.location.pathname)
+  const [currentPath, setCurrentPath] = useState(getCurrentPath())
 
   useEffect(() => {
     const onLocationChange = () => {
-      setCurrentPath(window.location.pathname)
+      setCurrentPath(getCurrentPath())
     }
 
     // * Ejecucion del evento personalizado que se creo
@@ -33,7 +34,7 @@ export function Router({ children, routes = [], defaultComponent: DefaultCompone
     return isRoute ? props : null
   })
 
-  const routesToUse = routes.concat(routesFromChildren) // ! se une la ruta de search(routes) con las obtenidas del <Route />
+  const routesToUse = routes.concat(routesFromChildren).filter(Boolean) // ! se une la ruta de search(routes) con las obtenidas del <Route />
 
   // * Validamos que el path actual tenga similitud con el path de la const routes
   const Page = routesToUse.find(({ path }) => {
